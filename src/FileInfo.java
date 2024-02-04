@@ -16,15 +16,27 @@ public class FileInfo {
     public FileInfo() {
     }
 
+    /***
+     * Constructor of the FileInfo class
+     * @param path file path being passed in from the Windows Explorer
+     */
     public FileInfo(String path) {
         this.path = path;
         this.file = new File(this.path);
     }
 
+    /***
+     * Validate the file path
+     * @return true if the file exists, or false otherwise
+     */
     public boolean validate() {
         return this.file.exists() && this.file.isFile();
     }
 
+    /***
+     * Generate all the information about the file, including file name, file extension, file size, and MD5
+     * @return an array of Strings
+     */
     public String[] generateInfo() {
         this.name = this.file.getName();
         this.extension = this.name.lastIndexOf('.') > 0
@@ -34,6 +46,11 @@ public class FileInfo {
         return display(this);
     }
 
+    /***
+     * A static private util method to generate md5 for the file object passed in
+     * @param file File object
+     * @return 32-character String
+     */
     private static String generateMd5(File file) {
         StringBuilder sb = new StringBuilder();
         String md5;
@@ -63,8 +80,13 @@ public class FileInfo {
         return md5;
     }
 
+    /***
+     * A static private method to display all the information for the fileinfo object passed in
+     * @param info FileInfo object
+     * @return an array of Strings
+     */
     private static String[] display(FileInfo info) {
-        return new String[]{info.path, info.name, info.extension, String.valueOf(info.size), info.md5};
+        return new String[]{info.path, info.name, info.extension, info.size + " bytes", info.md5};
     }
 
     public String getPath() {

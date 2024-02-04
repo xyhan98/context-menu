@@ -19,6 +19,11 @@ public class GUI extends JFrame {
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
     }
 
+    /***
+     * Constructor of the GUI class
+     * @param data a 2D array of Strings to be passed in to JTable
+     * @throws HeadlessException
+     */
     public GUI(String[][] data) throws HeadlessException {
         super("File(s) Information");
         this.data = data;
@@ -34,6 +39,11 @@ public class GUI extends JFrame {
         this.setVisible(true);
     }
 
+    /***
+     * A static private util method to adjust column width based on the longest length of the cell
+     * @param table JTable object
+     * @return an integer to be set as the width of the JFrame
+     */
     private static int setOptimalColumnWidth(JTable table) {
         int tableWidth = 0;
         for (int columnIndex = 0; columnIndex < table.getColumnCount(); columnIndex++) {
