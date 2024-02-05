@@ -8,14 +8,12 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class Main {
     private static final int PORT = 9999;
     private static ServerSocket serverSocket;
     private static List<String> arguments = new ArrayList<>();
+    private static final int TIME_WAIT = 5000;
 
     /***
      * Application main entry
@@ -30,6 +28,9 @@ public class Main {
             // Not able to bind port 9999
             sendArgument(args[0]);
             System.exit(0);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("No file path has been provided");
+            System.exit(1);
         }
 
         // Start a new thread to handle socket connection and I/O
@@ -51,23 +52,21 @@ public class Main {
         });
         thread.start();
 
-        ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-        executor.schedule(() -> {
-            thread.interrupt();
-            if (!serverSocket.isClosed()) {
-                try {
-                    serverSocket.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
+        // Block the main thread for 5 seconds to collect file paths sent from other processes
+        long tic = System.currentTimeMillis();
+        while (true) {
+            if (System.currentTimeMillis() - tic >= TIME_WAIT) {
+                thread.interrupt();
+                if (!serverSocket.isClosed()) {
+                    try {
+                        serverSocket.close();
+                    } catch (IOException e) {
+                        System.out.printf("An error occurs when closing the server socket, error: [%s]\n",
+                                e.getMessage());
+                    }
                 }
+                break;
             }
-            executor.shutdown();
-        }, 5, TimeUnit.SECONDS);
-
-        try {
-            thread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         }
 
         // 1. Convert a list of Strings (file paths) to an array of Strings with same size
