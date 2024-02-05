@@ -21,7 +21,7 @@ public class GUI extends JFrame {
 
     /***
      * Constructor of the GUI class
-     * @param data a 2D array of Strings to be passed in to JTable
+     * @param data a 2D array of Strings to be passed into JTable
      * @throws HeadlessException
      */
     public GUI(String[][] data) throws HeadlessException {
@@ -70,7 +70,7 @@ public class GUI extends JFrame {
             column.setPreferredWidth(maxColumnWidth);
             tableWidth += maxColumnWidth;
 
-            // Center the content in the cells, except the first and last columns
+            // Center the content in the cells, except for the first and last columns
             if (columnIndex != 0 && columnIndex != table.getColumnCount() - 1) {
                 column.setCellRenderer(centerRenderer);
             }

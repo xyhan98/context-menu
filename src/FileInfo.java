@@ -13,6 +13,9 @@ public class FileInfo {
     private String md5;
     private static final int BUFFER_SIZE = 8192;
 
+    /***
+     * Constructor of the FileInfo class
+     */
     public FileInfo() {
     }
 
