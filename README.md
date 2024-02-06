@@ -4,6 +4,7 @@
 
 - Export jar
   ![export-jar](./img/export-jar.png)
+  - You might need to delete the `test` folder
 
 - Select main class
   ![select-main-class](./img/select-main-class.png)
